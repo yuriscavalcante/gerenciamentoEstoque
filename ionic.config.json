@@ -1,0 +1,7 @@
+{
+  "name": "gerenciadorEstoque",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
