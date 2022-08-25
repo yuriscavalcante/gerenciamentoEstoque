@@ -5,9 +5,11 @@
     width: 75%;
     margin: 0 auto;
     z-index: 2;
+    background-color: #d3d5db;
 
     &.top {
         top: 5%;
+        background-color: #d3d5db;
     }
 
     &.bottom {
@@ -24,37 +26,19 @@ ion-slides {
 
     .slide-inner {
         width: 75%;
-        color: #fff;
-        background-color: #0072bc;
+        color: rgb(3, 3, 3);
+        background-color: #d3d5db;
         border-radius: 10px;
 
         ion-item {
-            --background: rgba(255, 255, 255, 0.2);
+            --background: rgb(253, 252, 252);
             --border-radius: 10px;
+            
 
             ion-input {
-                --color: #fff;
+                --color: rgb(0, 0, 0);
             }
         }
     }
 }
 
-.ocean {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 45%;
-    background-color: var(--ion-color-primary);
-
-    .waves {
-        position: absolute;
-        top: -100px;
-        left: 0;
-        right: 0;
-        height: 100px;
-        
-        background-size: contain;
-        transition: all 0.5s;
-    }
-}
