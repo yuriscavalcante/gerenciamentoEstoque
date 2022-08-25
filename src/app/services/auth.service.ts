@@ -25,6 +25,6 @@ export class AuthService {
      }
 
      getAuth(){
-
+      return this.afa;
      }
 }
