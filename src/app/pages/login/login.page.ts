@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, LoadingController, ToastController } from '@ionic/angular';
-//import { User } from 'src/app/interfaces/user';
-//import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/interfaces/user';
+import { AuthService } from 'src/app/services/auth.service';
 //import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 @Component({
@@ -13,12 +13,12 @@ export class LoginPage implements OnInit {
   @ViewChild(IonSlides) slides: IonSlides;
   public wavesPosition: number = 0;
   private wavesDifference: number = 100;
-  //public userLogin: User = {};
-  //public userRegister: User = {};
+  public userLogin: User = {};
+  public userRegister: User = {};
   private loading: any;
 
   constructor(
-    //private authService: AuthService,
+    private authService: AuthService,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     //public keyboard: Keyboard
@@ -35,18 +35,6 @@ export class LoginPage implements OnInit {
       this.wavesPosition -= this.wavesDifference;
     }
   }
-/*
-  async login() {
-    await this.presentLoading();
-
-    try {
-      await this.authService.login(this.userLogin);
-    } catch (error) {
-      this.presentToast(error.message);
-    } finally {
-      this.loading.dismiss();
-    }
-  }
 
   async register() {
     await this.presentLoading();
@@ -54,7 +42,14 @@ export class LoginPage implements OnInit {
     try {
       await this.authService.register(this.userRegister);
     } catch (error) {
-      this.presentToast(error.message);
+      let message: string;
+
+      switch(error.code){
+        case 'auth/email-already-in-use':
+        message = 'Email já está sendo usado!';
+        break;
+      }
+      this.presentToast(message);
     } finally {
       this.loading.dismiss();
     }
@@ -68,5 +63,22 @@ export class LoginPage implements OnInit {
   async presentToast(message: string) {
     const toast = await this.toastCtrl.create({ message, duration: 2000 });
     toast.present();
-  }*/
+  }
+
+
+
+  async login() {
+    await this.presentLoading();
+
+    try {
+      await this.authService.login(this.userLogin);
+      console.log("Ok");
+    } catch (error) {
+      this.presentToast(error.message);
+    } finally {
+      this.loading.dismiss();
+    }
+  }
+
+  
 }
