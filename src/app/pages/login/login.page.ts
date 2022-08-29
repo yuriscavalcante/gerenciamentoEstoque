@@ -41,6 +41,7 @@ export class LoginPage implements OnInit {
 
     try {
       await this.authService.register(this.userRegister);
+      await this.authService.saveUser(this.userRegister);
     } catch (error) {
       let message: string;
 

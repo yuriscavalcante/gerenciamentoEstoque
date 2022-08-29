@@ -36,7 +36,15 @@
         <span>Cadastro</span>
 
         <ion-item class="ion-margin-top" lines="none">
-          <ion-input type="text" placeholder="Nome"></ion-input>
+          <ion-input type="text" placeholder="Nome" [(ngModel)]="userRegister.name"></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-margin-top" lines="none">
+          <ion-input type="text" placeholder="Sobrenome" [(ngModel)]="userRegister.lastName"></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-margin-top" lines="none">
+          <ion-input type="number" placeholder="Idade" [(ngModel)]="userRegister.age"></ion-input>
         </ion-item>
 
         <ion-item class="ion-margin-top" lines="none">
