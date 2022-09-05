@@ -38,22 +38,34 @@ export class LoginPage implements OnInit {
 
   async register() {
     await this.presentLoading();
-
-    try {
-      await this.authService.register(this.userRegister);
-      await this.authService.saveUser(this.userRegister);
-    } catch (error) {
-      let message: string;
-
-      switch(error.code){
-        case 'auth/email-already-in-use':
-        message = 'Email já está sendo usado!';
-        break;
+    if(this.userRegister.age != 0 && this.userRegister.name != '' && this.userRegister.email != '' && this.userRegister.password != '' && this.userRegister.lastName != '' 
+    && this.userRegister.confPassword != '' && this.userRegister.password == this.userRegister.confPassword ){
+      try {
+        await this.authService.register(this.userRegister);
+        await this.authService.saveUser(this.userRegister);
+      } catch (error) {
+        let message: string;
+  
+        switch(error.code){
+          case 'auth/email-already-in-use':
+          message = 'Email já está sendo usado!';
+          break;
+        }
+        this.presentToast(message);
+      } finally {
+        this.loading.dismiss();
       }
-      this.presentToast(message);
-    } finally {
+    }
+    else if(this.userRegister.age != 0 && this.userRegister.name != '' && this.userRegister.email != '' && this.userRegister.password != '' && this.userRegister.lastName != '' 
+    && this.userRegister.confPassword != '' && this.userRegister.password != this.userRegister.confPassword ){
+      this.presentToast("Senhas não combinam!");
+      this.loading.dismiss();
+    }  
+    else{
+      this.presentToast("Preencha todos os campos!");
       this.loading.dismiss();
     }
+    
   }
 
   async presentLoading() {
@@ -71,12 +83,17 @@ export class LoginPage implements OnInit {
   async login() {
     await this.presentLoading();
 
-    try {
-      await this.authService.login(this.userLogin);
-      console.log("Ok");
-    } catch (error) {
-      this.presentToast(error.message);
-    } finally {
+    if(this.userLogin.email != '' && this.userLogin.password != ''){
+      try {
+        await this.authService.login(this.userLogin);
+        console.log("Ok");
+      } catch (error) {
+        this.presentToast(error.message);
+      } finally {
+        this.loading.dismiss();
+      }
+    }else{
+      this.presentToast("Preencha todos os campos!");
       this.loading.dismiss();
     }
   }

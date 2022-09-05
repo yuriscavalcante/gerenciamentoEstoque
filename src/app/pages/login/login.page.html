@@ -25,6 +25,8 @@
           <ion-input type="password" placeholder="Senha" [(ngModel)]="userLogin.password"></ion-input>
         </ion-item>
 
+        
+
         <ion-button class="ion-margin-top" (click)="login()" color="light" expand="block">
           Entrar
         </ion-button>
@@ -53,6 +55,10 @@
 
         <ion-item class="ion-margin-top" lines="none">
           <ion-input type="password" placeholder="Senha" [(ngModel)]="userRegister.password"></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-margin-top" lines="none">
+          <ion-input type="password" placeholder="Confirme sua Senha" [(ngModel)]="userRegister.confPassword"></ion-input>
         </ion-item>
 
         <ion-button class="ion-margin-top" (click)="register()" color="light" expand="block">

@@ -1,8 +1,18 @@
 <ion-header>
+  
+  
   <ion-toolbar>
-    <ion-title></ion-title>
+   
+    <ion-title>Default Buttons</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="logout()" color="secondary">
+        <ion-icon size="large" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
-</ion-header>
+  
+  
+ </ion-header>
 
 <ion-content>
   <ion-list *ngIf="!products.length">
@@ -34,7 +44,6 @@
         <ion-label>
           {{ product.name }}
           <p>{{ product.description }}</p>
-          <p>{{ product.createdAt | date: 'short' }}</p>
         </ion-label>
 
         <ion-note color="primary" slot="end" *ngIf="product.price">{{ product.price | currency: 'BRL' }}</ion-note>
@@ -50,22 +59,18 @@
   </ion-list>
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-    <ion-grid>
-      <ion-row>
-        <ion-col size="6">
-          <ion-button (click)="logout()" color="danger" expand="block">
-            Sair
-          </ion-button>
-        </ion-col>
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
 
-        <ion-col size="6">
-          <ion-button routerLink="/details" expand="block">
-            Add produto
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
-</ion-footer>
+    <ion-tab-button tab="Produtos">
+      <ion-icon name="pricetags"></ion-icon>
+      <ion-label>Produtos</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="Usuário">
+      <ion-icon name="person"></ion-icon>
+      <ion-label>Usuário</ion-label>
+    </ion-tab-button>
+
+    </ion-tab-bar>
+</ion-tabs>

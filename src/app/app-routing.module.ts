@@ -25,6 +25,10 @@ const routes: Routes = [
     path: 'details/:id',
     loadChildren: () => import('./pages/details/details.module').then( m => m.DetailsPageModule), canActivate:[AuthGuard]
   },
+  {
+    path: 'store-register',
+    loadChildren: () => import('./pages/store-register/store-register.module').then( m => m.StoreRegisterPageModule)
+  },
   
 ];
 

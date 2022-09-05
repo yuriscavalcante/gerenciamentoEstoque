@@ -26,9 +26,13 @@ export class AuthService {
      }
 
      saveUser(user:User){
-      return this.userCollection.add(user);
+      delete user.password;
+      delete user.confPassword;
+      return this.userCollection.add(user);  
 
      }
+
+    
 
      logout(){
       return this.afa.signOut();
