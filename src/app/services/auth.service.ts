@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { Store } from '../interfaces/store';
 import { User } from '../interfaces/user';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private userCollection: AngularFirestoreCollection<User>;
+ 
   constructor(
     private afa: AngularFireAuth,
     private afs: AngularFirestore)
@@ -15,27 +18,30 @@ export class AuthService {
       this.userCollection = this.afs.collection<User>('User');
       }
 
+      public uid: string;
+
      login(user:User){
       return this.afa.signInWithEmailAndPassword(user.email, user.password);
       
      }
 
-     register(user:User){
-      return this.afa.createUserWithEmailAndPassword(user.email, user.password);
+    async register(user:User){
+      await this.afa.createUserWithEmailAndPassword(user.email, user.password);
+      this.uid = (await (this.afa.currentUser)).uid
       
      }
 
-     saveUser(user:User){
+     async saveUser(user:User){
       delete user.password;
       delete user.confPassword;
-      return this.userCollection.add(user);  
+      return this.afs.doc('User/' + this.uid).set(user);  
 
      }
 
-     addStore(idUser, loja, data){
-      const newId = this.afs.createId;
+     async addStore(idUser, loja: Store){
+       const newId = this.afs.createId();
 
-      return this.afs.doc('User/'+idUser+'/lojas/'+ newId).set(data);
+       await this.afs.doc('User/'+idUser+'/lojas/'+newId).set(loja);
      }
 
 
@@ -46,4 +52,13 @@ export class AuthService {
      getAuth(){
       return this.afa;
      }
+
+    getInfo(uid){
+        const userDoc = this.afs.doc<User>('User/'+uid);
+        return userDoc.collection<Store>('lojas/').valueChanges();
+        //return this.afs.doc<User>('user/'+ uid).collection<Store>('lojas').valueChanges();
+        //return this.afs.collection('user/'+uid+'/lojas').valueChanges(); 
+        //return this.userCollection.valueChanges({idField: 'id'});
+        //return this.afs.doc('user/'+uid+'/lojas').valueChanges();
+      }
 }

@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { ActionSheetController, LoadingController, ToastController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/interfaces/product';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { Store } from 'src/app/interfaces/store';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { User } from 'src/app/interfaces/user';
 
 @Component({
   selector: 'app-home',
@@ -12,24 +17,37 @@ import { Subscription } from 'rxjs';
 })
 export class HomePage implements OnInit {
   private loading: any;
-  public products = new Array<Product>();
-  private productsSubscription: Subscription;
+  public store = new Array<Store>();
+  private storeSubscription: Subscription;
+  public uid;
+  private itemDoc: AngularFirestoreDocument<User>;
+  item: Observable<Store[]>;
 
   constructor(
     private authService: AuthService,
     private loadingCtrl: LoadingController,
     private productService: ProductService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    public actionSheetController: ActionSheetController,
+    private router: Router,
+    private afa: AngularFireAuth,
+    private afs: AngularFirestore
   ) {
-    this.productsSubscription = this.productService.getProducts().subscribe(data => {
-      this.products = data;
-    });
+    
   }
 
-  ngOnInit() { }
+  async ngOnInit() {
+    this.uid = (await this.afa.currentUser).uid;
+    console.log(this.uid);
+    
+    //console.log(this.item);
+    
+    this.item = this.authService.getInfo(this.uid);
+
+   }
 
   ngOnDestroy() {
-    this.productsSubscription.unsubscribe();
+    this.storeSubscription.unsubscribe();
   }
 
   async logout() {
@@ -60,5 +78,57 @@ export class HomePage implements OnInit {
   async presentToast(message: string) {
     const toast = await this.toastCtrl.create({ message, duration: 2000 });
     toast.present();
+  }
+
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: '',
+      cssClass: '',
+      buttons: [{
+        text: 'Adicionar Loja',
+        icon: 'add-outline',
+        id: 'add-button',
+        data: {
+          type: 'createStore'
+        },
+        handler: () => {
+          this.createStore();
+        }
+      }, {
+        text: 'Share',
+        icon: 'share',
+        data: 10,
+        handler: () => {
+          console.log('Share clicked');
+        }
+      }, {
+        text: 'Play (open modal)',
+        icon: 'caret-forward-circle',
+        data: 'Data value',
+        handler: () => {
+          console.log('Play clicked');
+        }
+      }, {
+        text: 'Favorite',
+        icon: 'heart',
+        handler: () => {
+          console.log('Favorite clicked');
+        }
+      }, {
+        text: 'Desconectar',
+        icon: 'log-out',
+        handler: () => {
+          this.authService.logout();
+        }
+      }]
+    });
+    await actionSheet.present();
+
+    const { role, data } = await actionSheet.onDidDismiss();
+    console.log('onDidDismiss resolved with role and data', role, data);
+  }
+
+  createStore(){
+    this.router.navigate(['store-register']);
   }
 }

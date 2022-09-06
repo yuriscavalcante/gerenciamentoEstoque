@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from 'src/app/interfaces/store';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-store-register',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StoreRegisterPage implements OnInit {
 
-  constructor() { }
+  public name: Store = {};
+  public uid: any;
 
-  ngOnInit() {
+  constructor(
+    private authService: AuthService,
+  ) { }
+
+  async ngOnInit() {
+    this.uid = (await this.authService.getAuth().currentUser).uid;
   }
+
+
+ async cadStore(){
+  this.authService.addStore(this.uid, this.name);
+ }
 
 }

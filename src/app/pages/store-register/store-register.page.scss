@@ -1,0 +1,39 @@
+.container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 75%;
+    margin: 0 auto;
+    z-index: 2;
+    background-color: #d3d5db;
+
+    &.top {
+        top: 5%;
+        background-color: #d3d5db;
+    }
+
+    &.bottom {
+        bottom: 30%;
+
+        span {
+            color: #fff;
+        }
+    }
+}
+
+ion-content{
+    --background:rgb(118, 173, 167);
+    ion-item {
+        padding:25px;
+        --background: rgb(253, 252, 252);
+        --border-radius: 10px;
+        
+    
+        ion-input {
+            --color: rgb(0, 0, 0);
+        }
+    }
+    
+}
+
+

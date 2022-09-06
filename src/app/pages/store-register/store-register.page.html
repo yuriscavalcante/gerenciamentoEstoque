@@ -1,9 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>storeRegister</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-item class="ion-margin-top" lines="none">
+    <ion-input type="text" placeholder="Nome" [(ngModel)]="name.name"></ion-input>
+  </ion-item>
 
+  <ion-button (click)="cadStore()" color="success" textColor="white" expand="block">Cadastrar</ion-button>
 </ion-content>
