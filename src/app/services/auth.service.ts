@@ -32,7 +32,12 @@ export class AuthService {
 
      }
 
-    
+     addStore(idUser, loja, data){
+      const newId = this.afs.createId;
+
+      return this.afs.doc('User/'+idUser+'/lojas/'+ newId).set(data);
+     }
+
 
      logout(){
       return this.afa.signOut();
