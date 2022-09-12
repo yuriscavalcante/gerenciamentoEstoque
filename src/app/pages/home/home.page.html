@@ -11,13 +11,28 @@
   
  </ion-header>
 
-<ion-content> 
-  <ion-list>
-    	<ion-item *ngFor="let i of item | async">
-        {{i.name}}<br>
-        {{i.lastName}}
 
-      </ion-item>
-  </ion-list>
+<ion-content slot="start">     
+  <ion-list *ngFor="let i of item | async; let first= first">
+    	<ion-card>
+        <div align="center">
+          <div class="img">
+            <img src="{{i.url}}"/>
+          </div>
+      <ion-card-header>
+        <ion-card-subtitle>{{i.brand}} {{i.model}}</ion-card-subtitle>
+        <ion-card-subtitle>{{i.quantity}} Unidades</ion-card-subtitle>
+        <ion-card-subtitle>R${{i.price}}</ion-card-subtitle>
+      </ion-card-header>
+    </div>
+      </ion-card>
+    </ion-list>
+  
+
 </ion-content>
+
+
+
+
+
 

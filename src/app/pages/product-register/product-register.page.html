@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-input type="text" placeholder="Url do Produto" [(ngModel)]="product.url"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input type="text" placeholder="Tipo do Produto" [(ngModel)]="product.type"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input type="text" placeholder="Marca do produto" [(ngModel)]="product.brand"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input type="text" placeholder="Modelo do Produto" [(ngModel)]="product.model"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input type="number" placeholder="Valor do Produto" [(ngModel)]="product.price"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input type="number" placeholder="Quantidade do Produto" [(ngModel)]="product.quantity"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input type="text" placeholder="Descrição do Produto" [(ngModel)]="product.description"></ion-input>
+  </ion-item>
+  <ion-button (click)="register()" class="ion-margin-top" color="success" expand="block">
+    Cadastrar
+  </ion-button>
+</ion-content>

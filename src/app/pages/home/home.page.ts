@@ -25,6 +25,7 @@ export class HomePage implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private prodService: ProductService,
     private loadingCtrl: LoadingController,
     private productService: ProductService,
     private toastCtrl: ToastController,
@@ -42,7 +43,8 @@ export class HomePage implements OnInit {
     
     //console.log(this.item);
     
-    this.item = this.authService.getInfo(this.uid);
+    //this.item = this.authService.getInfo(this.uid);
+    this.item = this.prodService.getProduct(this.uid);
 
    }
 
@@ -95,11 +97,10 @@ export class HomePage implements OnInit {
           this.createStore();
         }
       }, {
-        text: 'Share',
-        icon: 'share',
-        data: 10,
+        text: 'Adicionar produto',
+        icon: 'duplicate-outline',
         handler: () => {
-          console.log('Share clicked');
+          this.router.navigate(['product-register']);
         }
       }, {
         text: 'Play (open modal)',
@@ -131,4 +132,6 @@ export class HomePage implements OnInit {
   createStore(){
     this.router.navigate(['store-register']);
   }
+
+  
 }

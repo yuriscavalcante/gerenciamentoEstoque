@@ -27,7 +27,19 @@ const routes: Routes = [
   },
   {
     path: 'store-register',
-    loadChildren: () => import('./pages/store-register/store-register.module').then( m => m.StoreRegisterPageModule)
+    loadChildren: () => import('./pages/store-register/store-register.module').then( m => m.StoreRegisterPageModule), canActivate:[AuthGuard]
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./pages/user/user.module').then( m => m.UserPageModule), canActivate:[AuthGuard]
+  },
+  {
+    path: 'store',
+    loadChildren: () => import('./pages/store/store.module').then( m => m.StorePageModule), canActivate:[AuthGuard]
+  },
+  {
+    path: 'product-register',
+    loadChildren: () => import('./pages/product-register/product-register.module').then( m => m.ProductRegisterPageModule), canActivate:[AuthGuard]
   },
   
 ];

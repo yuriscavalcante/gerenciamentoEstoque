@@ -1,0 +1,14 @@
+ion-content{
+    size-adjust: 60%;
+
+    ion-list{
+        ion-card{
+            padding: 15px;
+            align-items: center;
+            .img{
+                max-width: max-content;
+
+            }
+        }
+    }
+}

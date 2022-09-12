@@ -40,8 +40,13 @@ export class AuthService {
 
      async addStore(idUser, loja: Store){
        const newId = this.afs.createId();
+       const data = {
+        name: loja.name,
+        id: newId
+       };
+       
 
-       await this.afs.doc('User/'+idUser+'/lojas/'+newId).set(loja);
+       await this.afs.doc('User/'+idUser+'/lojas/'+newId).set(data);
      }
 
 
