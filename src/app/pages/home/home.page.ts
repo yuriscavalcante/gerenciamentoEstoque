@@ -3,12 +3,14 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ActionSheetController, LoadingController, ToastController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/interfaces/product';
-import { Observable, Subscription } from 'rxjs';
+import { observable, Observable, of, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from 'src/app/interfaces/store';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { User } from 'src/app/interfaces/user';
+import { map } from 'rxjs/internal/operators/map';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -17,15 +19,18 @@ import { User } from 'src/app/interfaces/user';
 })
 export class HomePage implements OnInit {
   private loading: any;
+  public tam: any;
   public store = new Array<Store>();
   private storeSubscription: Subscription;
   public uid;
   private itemDoc: AngularFirestoreDocument<User>;
-  item: Observable<Store[]>;
+  public item: Observable<Product[]>;
+  items: Observable<Product[]>;
+  isModalOpen = false;
 
   constructor(
     private authService: AuthService,
-    private prodService: ProductService,
+    //private prodService: ProductService,
     private loadingCtrl: LoadingController,
     private productService: ProductService,
     private toastCtrl: ToastController,
@@ -44,7 +49,11 @@ export class HomePage implements OnInit {
     //console.log(this.item);
     
     //this.item = this.authService.getInfo(this.uid);
-    this.item = this.prodService.getProduct(this.uid);
+    this.item = this.productService.getProducts(this.uid);
+    this.items = this.item.pipe(map(item => item.filter(items=>items.quantity<=5)));
+    
+    
+    
 
    }
 
@@ -82,6 +91,10 @@ export class HomePage implements OnInit {
     toast.present();
   }
 
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
+
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: '',
@@ -103,19 +116,14 @@ export class HomePage implements OnInit {
           this.router.navigate(['product-register']);
         }
       }, {
-        text: 'Play (open modal)',
-        icon: 'caret-forward-circle',
+        text: 'Perfil',
+        icon: 'person-outline',
         data: 'Data value',
         handler: () => {
           console.log('Play clicked');
         }
-      }, {
-        text: 'Favorite',
-        icon: 'heart',
-        handler: () => {
-          console.log('Favorite clicked');
-        }
-      }, {
+      },
+     {
         text: 'Desconectar',
         icon: 'log-out',
         handler: () => {
@@ -131,6 +139,11 @@ export class HomePage implements OnInit {
 
   createStore(){
     this.router.navigate(['store-register']);
+  }
+
+  details()
+  {
+    this.router.navigate(['details']);
   }
 
   

@@ -36,15 +36,39 @@ export class ProductService {
     await this.afs.doc('User/'+uId+'/produtos/'+newId).set(data);
    }
 
-   getProduct(uId)
+   async getProduct(id){
+    return this.productCollection.doc<Product>(id).valueChanges();
+   }
+
+   test(uId, id){
+    /*const userDoc = this.afs.doc<User>('User/'+uId);
+    return userDoc.collection<Product>('produtos/'+id).valueChanges();*/
+    //return this.afs.collection('User/').doc(uId).collection('produtos').doc(id).valueChanges();
+    /*const itemDoc = this.afs.doc<Product>('User/'+uId+'/produtos/'+id);
+    return itemDoc;*/
+   
+   
+
+   }
+
+   getProducts(uId)
    {
     const userDoc = this.afs.doc<User>('User/'+uId);
     return userDoc.collection<Product>('produtos/').valueChanges();
    }
 
-   updateProduct(id: string, product: Product)
+   async updateProduct(uId, id: string, product: Product)
    {
-    
+    const data = {
+      url: product.url,
+      type: product.type,
+      brand: product.brand,
+      price: product.price,
+      model: product.model,
+      quantity: product.quantity,
+      description: product.description,
+      };
+    await this.afs.doc('User/'+uId+'/produtos/'+id).update(data);
    }
 
    deleteProduct(id: string)
