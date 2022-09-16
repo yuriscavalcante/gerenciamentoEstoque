@@ -21,6 +21,9 @@ export class DetailsPage implements OnInit {
   private productId: string = null;
   items:Observable<Product[]>;
   item:Observable<Product[]>;
+  products:Observable<Product[]>;
+  isModalOpen = false;
+  public availability = 'false';
 
 
   constructor(
@@ -47,13 +50,12 @@ export class DetailsPage implements OnInit {
     //this.items.subscribe(val =>console.log(val), error=>console.log("Error"), ()=>console.log("Complete"))
     this.item = this.productService.getProducts(this.uid);
     this.items = this.item.pipe(map(item => item.filter(items=>items.id == this.productId)));
-     
-    
-    //console.log(this.items);
-
     
   }
 
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
   
   async saveProduct(){
     await this.presentLoading();

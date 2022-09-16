@@ -7,4 +7,5 @@ export interface Product {
     quantity?: number;
     description?: string;
     url?: string;
+    availability?: boolean;
 }
