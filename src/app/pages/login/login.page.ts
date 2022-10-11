@@ -1,3 +1,9 @@
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable @typescript-eslint/no-inferrable-types */
+/* eslint-disable @typescript-eslint/member-ordering */
+/* eslint-disable @typescript-eslint/quotes */
+/* eslint-disable eqeqeq */
+/* eslint-disable max-len */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, LoadingController, ToastController } from '@ionic/angular';
 import { User } from 'src/app/interfaces/user';
@@ -38,14 +44,14 @@ export class LoginPage implements OnInit {
 
   async register() {
     await this.presentLoading();
-    if(this.userRegister.age != 0 && this.userRegister.name != '' && this.userRegister.email != '' && this.userRegister.password != '' && this.userRegister.lastName != '' 
+    if(this.userRegister.age != 0 && this.userRegister.name != '' && this.userRegister.email != '' && this.userRegister.password != '' && this.userRegister.lastName != ''
     && this.userRegister.confPassword != '' && this.userRegister.password == this.userRegister.confPassword ){
       try {
         await this.authService.register(this.userRegister);
+        this.userRegister = {};
         await this.authService.saveUser(this.userRegister);
       } catch (error) {
         let message: string;
-  
         switch(error.code){
           case 'auth/email-already-in-use':
           message = 'Email já está sendo usado!';
@@ -56,16 +62,15 @@ export class LoginPage implements OnInit {
         this.loading.dismiss();
       }
     }
-    else if(this.userRegister.age != 0 && this.userRegister.name != '' && this.userRegister.email != '' && this.userRegister.password != '' && this.userRegister.lastName != '' 
+    else if(this.userRegister.age != 0 && this.userRegister.name != '' && this.userRegister.email != '' && this.userRegister.password != '' && this.userRegister.lastName != ''
     && this.userRegister.confPassword != '' && this.userRegister.password != this.userRegister.confPassword ){
       this.presentToast("Senhas não combinam!");
       this.loading.dismiss();
-    }  
+    }
     else{
       this.presentToast("Preencha todos os campos!");
       this.loading.dismiss();
     }
-    
   }
 
   async presentLoading() {
@@ -78,15 +83,14 @@ export class LoginPage implements OnInit {
     toast.present();
   }
 
-
-
   async login() {
     await this.presentLoading();
 
     if(this.userLogin.email != '' && this.userLogin.password != ''){
       try {
         await this.authService.login(this.userLogin);
-        console.log("Ok");
+        this.userLogin = {};
+        //console.log("Ok");
       } catch (error) {
         this.presentToast(error.message);
       } finally {
@@ -97,6 +101,4 @@ export class LoginPage implements OnInit {
       this.loading.dismiss();
     }
   }
-
-  
 }

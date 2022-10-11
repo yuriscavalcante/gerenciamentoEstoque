@@ -4,6 +4,7 @@ import { IonSlides, LoadingController, ToastController } from '@ionic/angular';
 import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from 'src/app/services/product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-register',
@@ -11,14 +12,25 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./product-register.page.scss'],
 })
 export class ProductRegisterPage implements OnInit {
-  public product: Product = {};
+  public product: Product = {
+    id: '',
+    type: '',
+    brand: '',
+    price: 0,
+    model: '',
+    quantity: 0,
+    description: '',
+    url: '',
+    availability: false
+  };
   private loading: any;
   private uid: any;
   constructor(
     private authService: AuthService,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
-    private prodService: ProductService
+    private prodService: ProductService,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -28,9 +40,11 @@ export class ProductRegisterPage implements OnInit {
   async register()
   {
     await this.presentLoading();
-    try 
+    try
     {
       await this.prodService.addProduct(this.uid, this.product);
+      await this.prodService.addBrand(this.uid, this.product.brand.toString());
+      this.router.navigate(['home']);
     }
     catch(error){
 

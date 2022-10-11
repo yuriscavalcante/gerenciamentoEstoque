@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable arrow-body-style */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable @typescript-eslint/member-ordering */
+/* eslint-disable @angular-eslint/use-lifecycle-interface */
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActionSheetController, LoadingController, ToastController } from '@ionic/angular';
@@ -27,6 +32,7 @@ export class HomePage implements OnInit {
   public item: Observable<Product[]>;
   items: Observable<Product[]>;
   isModalOpen = false;
+  range: any;
 
   constructor(
     private authService: AuthService,
@@ -39,33 +45,20 @@ export class HomePage implements OnInit {
     private afa: AngularFireAuth,
     private afs: AngularFirestore
   ) {
-    
   }
 
   async ngOnInit() {
     this.uid = (await this.afa.currentUser).uid;
-    console.log(this.uid);
-    
-    //console.log(this.item);
-    
-    //this.item = this.authService.getInfo(this.uid);
-    this.item = this.productService.getProducts(this.uid);
-    this.items = this.item.pipe(map(item => item.filter(items=>items.quantity<=5)));
-    
-    
-    
-
+    this.items = await this.productService.getProducts(this.uid);
+    this.item = await this.items.pipe(map(items => items.filter(item=>item.quantity<=5)));
    }
-
-  ngOnDestroy() {
-    this.storeSubscription.unsubscribe();
-  }
 
   async logout() {
     await this.presentLoading();
 
     try {
       await this.authService.logout();
+      this.uid = '';
     } catch (error) {
       console.error(error);
     } finally {
@@ -95,32 +88,25 @@ export class HomePage implements OnInit {
     this.isModalOpen = isOpen;
   }
 
+  registerPath(){
+    this.router.navigate(['product-register']);
+  }
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
       header: '',
       cssClass: '',
-      buttons: [{
-        text: 'Adicionar Loja',
-        icon: 'add-outline',
-        id: 'add-button',
-        data: {
-          type: 'createStore'
-        },
-        handler: () => {
-          this.createStore();
-        }
-      }, {
+      buttons: [ {
         text: 'Adicionar produto',
         icon: 'duplicate-outline',
         handler: () => {
-          this.router.navigate(['product-register']);
+          this.router.navigate(['/product-register']);
         }
       }, {
         text: 'Perfil',
         icon: 'person-outline',
         data: 'Data value',
         handler: () => {
-          console.log('Play clicked');
+          //console.log('Play clicked');
         }
       },
      {
@@ -134,7 +120,7 @@ export class HomePage implements OnInit {
     await actionSheet.present();
 
     const { role, data } = await actionSheet.onDidDismiss();
-    console.log('onDidDismiss resolved with role and data', role, data);
+    //console.log('onDidDismiss resolved with role and data', role, data);
   }
 
   createStore(){
@@ -146,5 +132,12 @@ export class HomePage implements OnInit {
     this.router.navigate(['details']);
   }
 
-  
+  search(value: string){
+    //console.log(value);
+    const filter = this.items.pipe(map(items => items.filter((res: any)=>{
+      return !res.model.indexOf(value);
+    })));
+    this.item = filter;
+  }
+
 }

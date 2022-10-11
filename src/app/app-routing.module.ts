@@ -26,10 +26,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/details/details.module').then( m => m.DetailsPageModule), canActivate:[AuthGuard]
   },
   {
-    path: 'store-register',
-    loadChildren: () => import('./pages/store-register/store-register.module').then( m => m.StoreRegisterPageModule), canActivate:[AuthGuard]
-  },
-  {
     path: 'user',
     loadChildren: () => import('./pages/user/user.module').then( m => m.UserPageModule), canActivate:[AuthGuard]
   },
@@ -39,9 +35,8 @@ const routes: Routes = [
   },
   {
     path: 'product-register',
-    loadChildren: () => import('./pages/product-register/product-register.module').then( m => m.ProductRegisterPageModule), canActivate:[AuthGuard]
-  },
-  
+    loadChildren: ()=> import ('./pages/product-register/product-register.module').then(m=>m.ProductRegisterPageModule)
+  }
 ];
 
 @NgModule({

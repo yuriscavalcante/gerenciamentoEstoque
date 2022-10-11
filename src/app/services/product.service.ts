@@ -29,28 +29,19 @@ export class ProductService {
       model: product.model,
       quantity: product.quantity,
       description: product.description,
-      availability: product.availability,
       id: newId
     };
-    if(product.quantity>0){
-      data.availability = true;
-      await this.afs.doc('User/'+uId+'/emEstoque/'+newId).set(data);
-    }else{
-      data.availability = false;
-      await this.afs.doc('User/'+uId+'/semEstoque/'+newId).set(data);
-    }
-
-
-    
+      await this.afs.doc('User/'+uId+'/produtos/'+newId).set(data);
    }
 
-   async getProduct(id){
-    return this.productCollection.doc<Product>(id).valueChanges();
+   async getProduct(uId){
+    const userDoc = this.afs.doc<User>('User/'+uId);
+    return userDoc.collection<Product[]>('produtos/').valueChanges();
    }
 
-   async addBrand(uId, product: Product){
+   async addBrand(uId, brand: string){
     const newId = this.afs.createId();
-    await this.afs.doc('User/'+uId+'/marcas/').set(product.brand);
+    await this.afs.doc('User/'+uId+'/marcas/'+newId).set(brand);
    }
 
    getProducts(uId)
@@ -58,6 +49,7 @@ export class ProductService {
     const userDoc = this.afs.doc<User>('User/'+uId);
     return userDoc.collection<Product>('produtos/').valueChanges();
    }
+
 
    async updateProduct(uId, id: string, product: Product)
    {
@@ -69,15 +61,9 @@ export class ProductService {
       model: product.model,
       quantity: product.quantity,
       description: product.description,
-      availability: product.availability
-      };
-      if(product.quantity>0){
-        data.availability = true;
-        await this.afs.doc('User/'+uId+'/emEstoque/'+id).set(data);
-      }else{
-        data.availability = false;
-        await this.afs.doc('User/'+uId+'/semEstoque/'+id).set(data);
-      }
+      availability: product.availability,
+    };
+    return this.afs.doc('User/'+uId+'/produtos/'+id).update(product);
    }
 
    deleteProduct(id: string)

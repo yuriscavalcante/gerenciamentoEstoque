@@ -6,3 +6,20 @@ export interface User {
     name?: string;
     lastName?: string;
 }
+
+export interface Product {
+  id?: string;
+  type?: string;
+  brand?: string;
+  price?: number;
+  model?: string;
+  quantity?: number;
+  description?: string;
+  url?: string;
+  availability?: boolean;
+}
+
+export interface Store {
+  name?: string;
+  id?: string;
+}
