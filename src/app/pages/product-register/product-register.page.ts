@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/interfaces/product';
 import { IonSlides, LoadingController, ToastController } from '@ionic/angular';
@@ -5,6 +6,7 @@ import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from 'src/app/services/product.service';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-product-register',
@@ -25,16 +27,18 @@ export class ProductRegisterPage implements OnInit {
   };
   private loading: any;
   private uid: any;
+  teste: any;
   constructor(
     private authService: AuthService,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private prodService: ProductService,
-    private router: Router
+    private router: Router,
+    private afa: AngularFireAuth,
   ) {}
 
   async ngOnInit() {
-    this.uid = (await this.authService.getAuth().currentUser).uid;
+    this.uid = (await this.afa.currentUser).uid;
   }
 
   async register()

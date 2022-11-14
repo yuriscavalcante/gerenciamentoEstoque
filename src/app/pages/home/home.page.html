@@ -1,18 +1,23 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="primary">
+      <ion-button (click)="presentAlert()" class="notification-button" ion-button clear>
+        <ion-icon class="icon" name="funnel"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-searchbar #input (keyup)="search(input.value)"></ion-searchbar>
-    <ion-buttons (click)="presentActionSheet()" slot="primary">
-      <ion-button>
-        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
-        <ion-badge>{{(item | async)?.length}}</ion-badge>
+    <ion-buttons id="open-modal" slot="primary">
+      <ion-button class="notification-button" ion-button clear>
+        <ion-icon class="icon" slot="icon-only" name="notifications"></ion-icon>
+        <ion-badge class="notifications-badge" color="danger">{{(alert | async)?.length}}</ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
  </ion-header>
 
 
-<ion-content slot="start">
-  <ion-list *ngFor="let i of items | async; let first= first">
+<ion-content>
+  <ion-list *ngFor="let i of item | async; let first= first">
     <ion-card [routerLink]="['/details', i.id]">
       <div align="center">
         <div class="img">
@@ -28,12 +33,33 @@
   </div>
     </ion-card>
   </ion-list>
+
 </ion-content>
+
+<ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+  <ng-template style="text-align: center; --ion-background-color: #347C99;">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()" class="close">Fechar</ion-button>
+        </ion-buttons>
+        <ion-title style="color:white;">Notificações</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding" >
+      <h4 style="color:white;">Os seguintes produtos precisam de reposição</h4>
+      <ion-item *ngFor="let a of alert | async">
+        <ion-label position="stacked" style="color: white;">{{a.brand}} {{a.model}} <br> Quantidade: {{a.quantity}}</ion-label>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
 <ion-footer>
   <ion-button (click)="registerPath()">
     <ion-icon slot="icon-only" name="add-outline"></ion-icon>
   </ion-button>
-  <ion-button>
+  <ion-button [routerLink]="['/user']">
     <ion-icon slot="icon-only" name="person-outline"></ion-icon>
   </ion-button>
 </ion-footer>

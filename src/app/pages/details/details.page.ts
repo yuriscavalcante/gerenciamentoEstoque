@@ -2,13 +2,11 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { ActionSheetController, LoadingController, ToastController } from '@ionic/angular';
-import { observable, Observable, of, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/interfaces/product';
-import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from 'src/app/services/product.service';
 import { IonModal } from '@ionic/angular';
 
@@ -31,14 +29,11 @@ export class DetailsPage implements OnInit {
 
   @ViewChild(IonModal) modal: IonModal;
   constructor(
-    private authService: AuthService,
     private loadingCtrl: LoadingController,
     private productService: ProductService,
     private toastCtrl: ToastController,
     public actionSheetController: ActionSheetController,
-    private router: Router,
     private afa: AngularFireAuth,
-    private afs: AngularFirestore,
     private activeteRoute: ActivatedRoute
   ) {
     this.productId = this.activeteRoute.snapshot.params['id'];

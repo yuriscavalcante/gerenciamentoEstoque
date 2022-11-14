@@ -1,0 +1,56 @@
+ion-content{
+  --ion-background-color: #1E4C96;
+  .full{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    img{
+      max-width: 250px;
+      max-height: 250px;
+      min-width: 250px;
+      min-height: 250px;
+    }
+    .data{
+      margin-left: -5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      margin-top: 2rem;
+      justify-content: left;
+      color: white;
+      ion-label{
+        margin-bottom: 1rem;
+        font-size: 17px;
+      }
+    }
+  }
+}
+
+ion-modal{
+  ng-template{
+    ion-content{
+      color: white;
+      ion-item{
+        color: white;
+
+      }
+    }
+  }
+}
+
+ion-input.custom {
+  --placeholder-color: white;
+  --color: white;
+  --background:#347C99;
+  --border-radius: 25px !important;
+}
+
+ion-label.custom{
+  --color: white;
+}
+
+ion-button.confirm{
+  --background:#09b73a;
+}

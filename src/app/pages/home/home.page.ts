@@ -1,21 +1,22 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/prefer-for-of */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable arrow-body-style */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable @angular-eslint/use-lifecycle-interface */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActionSheetController, LoadingController, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/interfaces/product';
-import { observable, Observable, of, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Store } from 'src/app/interfaces/store';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { User } from 'src/app/interfaces/user';
 import { map } from 'rxjs/internal/operators/map';
-import { filter } from 'rxjs/operators';
+import { IonModal } from '@ionic/angular';
+import { OverlayEventDetail } from '@ionic/core/components';
 
 @Component({
   selector: 'app-home',
@@ -23,17 +24,20 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  @ViewChild(IonModal) modal: IonModal;
   private loading: any;
   public tam: any;
   public store = new Array<Store>();
-  private storeSubscription: Subscription;
   public uid;
-  private itemDoc: AngularFirestoreDocument<User>;
   public item: Observable<Product[]>;
+  public alert: any;
   items: Observable<Product[]>;
-  isModalOpen = false;
   range: any;
-
+  filterType: any;
+  handlerMessage = '';
+  roleMessage = '';
+  nfilter: any;
+  checkedAlert: any [] = [false, false, false];
   constructor(
     private authService: AuthService,
     //private prodService: ProductService,
@@ -43,26 +47,34 @@ export class HomePage implements OnInit {
     public actionSheetController: ActionSheetController,
     private router: Router,
     private afa: AngularFireAuth,
-    private afs: AngularFirestore
+    private alertController: AlertController,
   ) {
   }
 
+
   async ngOnInit() {
     this.uid = (await this.afa.currentUser).uid;
-    this.items = await this.productService.getProducts(this.uid);
-    this.item = await this.items.pipe(map(items => items.filter(item=>item.quantity<=5)));
+    this.items = await this.productService.getProducts((await this.afa.currentUser).uid);
+    this.item = await this.items;
+    this.alert = await this.items.pipe(map(items => items.filter(item=>item.quantity<=5)));
+    console.log(this.alert);
+
    }
 
-  async logout() {
-    await this.presentLoading();
+   async ngOnDestroy(){
+    this.uid = '';
+   }
 
-    try {
-      await this.authService.logout();
-      this.uid = '';
-    } catch (error) {
-      console.error(error);
-    } finally {
-      this.loading.dismiss();
+  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
+
+  cancel() {
+    this.modal.dismiss(null, 'Fechar');
+  }
+
+  onWillDismiss(event: Event) {
+    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+    if (ev.detail.role === 'confirm') {
+      this.message = `Hello, ${ev.detail.data}!`;
     }
   }
 
@@ -82,10 +94,6 @@ export class HomePage implements OnInit {
   async presentToast(message: string) {
     const toast = await this.toastCtrl.create({ message, duration: 2000 });
     toast.present();
-  }
-
-  setOpen(isOpen: boolean) {
-    this.isModalOpen = isOpen;
   }
 
   registerPath(){
@@ -135,9 +143,69 @@ export class HomePage implements OnInit {
   search(value: string){
     //console.log(value);
     const filter = this.items.pipe(map(items => items.filter((res: any)=>{
-      return !res.model.indexOf(value);
+      if(this.filterType === 'model'){
+        return !res.model.toUpperCase().indexOf(value.toUpperCase());
+      }else if(this.filterType === 'brand'){
+        return !res.brand.toUpperCase().indexOf(value.toUpperCase());
+      }else if(this.filterType === 'type'){
+        return !res.type.toUpperCase().indexOf(value.toUpperCase());
+      }else{
+        return !res.model.indexOf(value.toUpperCase());
+      }
     })));
     this.item = filter;
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Filtro de pesquisa',
+      inputs: [
+        {
+          name:'brand',
+          label: 'Marca',
+          type: 'radio',
+          handler: (alertData)=>{
+            this.filterType = alertData.name;
+            alert.dismiss();
+            console.log(this.filterType);
+            if(this.filterType === 'brand'){
+              this.checkedAlert = [true, false, false];
+            }
+          },
+          checked: this.checkedAlert[0]
+        },
+        {
+          name:'model',
+          label: 'Modelo',
+          type: 'radio',
+          handler: (alertData)=>{
+            this.filterType = alertData.name;
+            alert.dismiss();
+            console.log(this.filterType);
+            if(this.filterType === 'model'){
+              this.checkedAlert = [false, true, false];
+            }
+          },
+          checked: this.checkedAlert[1]
+        },
+        {
+          name:'type',
+          label: 'Tipo de produto',
+          type: 'radio',
+          handler: (alertData)=>{
+            this.filterType = alertData.name;
+            alert.dismiss();
+            console.log(this.filterType);
+            if(this.filterType === 'type'){
+              this.checkedAlert = [false, false, true];
+            }
+          },
+          checked: this.checkedAlert[2]
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
 }

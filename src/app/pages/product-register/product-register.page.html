@@ -8,25 +8,32 @@
 
 <ion-content>
   <ion-item>
-    <ion-input type="text" placeholder="Url do Produto" [(ngModel)]="product.url"></ion-input>
+    <ion-label class="custom" position="stacked">Url do Produto</ion-label>
+    <ion-input class="custom" type="text" [(ngModel)]="product.url"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input type="text" placeholder="Tipo do Produto" [(ngModel)]="product.type"></ion-input>
+    <ion-label class="custom" position="stacked">Tipo do Produto</ion-label>
+    <ion-input class="custom" type="text" [(ngModel)]="product.type"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input type="text" placeholder="Marca do produto" [(ngModel)]="product.brand"></ion-input>
+    <ion-label class="custom" position="stacked">Marca do produto</ion-label>
+    <ion-input class="custom" type="text" [(ngModel)]="product.brand"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input type="text" placeholder="Modelo do Produto" [(ngModel)]="product.model"></ion-input>
+    <ion-label class="custom" position="stacked">Modelo do Produto</ion-label>
+    <ion-input class="custom" type="text" [(ngModel)]="product.model"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input type="number" placeholder="Valor do Produto" [(ngModel)]="product.price"></ion-input>
+    <ion-label class="custom" position="stacked">Valor do Produto</ion-label>
+    <ion-input class="custom" type="number" [(ngModel)]="product.price">R$</ion-input>
   </ion-item>
   <ion-item>
-    <ion-input type="number" placeholder="Quantidade do Produto" [(ngModel)]="product.quantity"></ion-input>
+    <ion-label class="custom" position="stacked">Quantidade do Produto</ion-label>
+    <ion-input class="custom" type="number" [(ngModel)]="product.quantity"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-input type="text" placeholder="Descrição do Produto" [(ngModel)]="product.description"></ion-input>
+    <ion-label class="custom" position="stacked">Descrição do Produto</ion-label>
+    <ion-input class="custom" type="text" [(ngModel)]="product.description"></ion-input>
   </ion-item>
   <ion-button (click)="register()" class="ion-margin-top" color="success" expand="block">
     Cadastrar

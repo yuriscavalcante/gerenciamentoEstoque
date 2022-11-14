@@ -1,7 +1,5 @@
-<ion-content class="swiper-no-swiping">
+<ion-content class="swiper-no-swiping" scroll-y="false">
   <div class="container top" >
-   
-
     <ion-segment (ionChange)="segmentChanged($event)" mode="ios" value="login">
       <ion-segment-button mode="ios" value="login">
         <ion-label>Login</ion-label>
@@ -11,30 +9,27 @@
       </ion-segment-button>
     </ion-segment>
   </div>
-
+  <img src="https://touchcomp.com.br/wp-content/uploads/2020/04/controle-de-estoque.jpg" style="max-width: 250px">
   <ion-slides>
     <ion-slide>
-      <div class="slide-inner ion-padding">
+      <div class="slide-inner ion-padding login">
         <span>Login</span>
 
         <ion-item class="ion-margin-top" lines="none">
           <ion-input type="email" placeholder="E-mail" [(ngModel)]="userLogin.email"></ion-input>
         </ion-item>
-
         <ion-item class="ion-margin-top" lines="none">
           <ion-input type="password" placeholder="Senha" [(ngModel)]="userLogin.password"></ion-input>
         </ion-item>
-
-        
-
-        <ion-button class="ion-margin-top" (click)="login()" color="light" expand="block">
+        <ion-button class="ion-margin-top" (click)="login()" color="primary" expand="block">
           Entrar
         </ion-button>
+        <a (click)="presentAlert()">Esqueci minha senha</a>
       </div>
     </ion-slide>
 
     <ion-slide>
-      <div class="slide-inner ion-padding">
+      <div class="slide-inner ion-padding register">
         <span>Cadastro</span>
 
         <ion-item class="ion-margin-top" lines="none">
@@ -54,6 +49,10 @@
         </ion-item>
 
         <ion-item class="ion-margin-top" lines="none">
+          <ion-input type="date" placeholder="birthDate" [(ngModel)]="userRegister.birthDate"></ion-input>
+        </ion-item>
+
+        <ion-item class="ion-margin-top" lines="none">
           <ion-input type="password" placeholder="Senha" [(ngModel)]="userRegister.password"></ion-input>
         </ion-item>
 
@@ -67,12 +66,4 @@
       </div>
     </ion-slide>
   </ion-slides>
-
-  <div class="ocean">
-    <div class="waves" [ngStyle]="{'background-position-x': wavesPosition + 'px'}"></div>
-
-    <div class="container bottom ion-text-center" >
-      
-    </div>
-  </div>
 </ion-content>

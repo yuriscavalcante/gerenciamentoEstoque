@@ -7,11 +7,6 @@
 </ion-header>
 
 <ion-content fullscreen *ngFor="let i of items | async; let first= first">
-  <!--<h3>Modelo: {{i.model}}</h3>
-  <h3>Marca: {{i.brand}}</h3>
-  <h3>Preço: {{i.price}}</h3>
-  <h3>Quantidade: {{i.quantity}}</h3>
-  <h3>Descrição: {{i.description}}</h3>-->
   <ion-card>
     <div class="img" align="center">
       <img src="{{i.url}}"/>
@@ -20,7 +15,7 @@
     <ion-card-header>
       <ion-card-title>Modelo: {{i.model}}</ion-card-title>
       <ion-card-subtitle>Marca: {{i.brand}}</ion-card-subtitle>
-      <ion-card-subtitle>Preço: {{i.price}}</ion-card-subtitle>
+      <ion-card-subtitle>Preço: R$ {{i.price}}</ion-card-subtitle>
       <ion-card-subtitle>Quantidade: {{i.quantity}}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>Descrição: {{i.description}}</ion-card-content>
@@ -32,7 +27,7 @@
     <ng-template>
       <ion-header>
         <ion-toolbar>
-          <ion-title>Modal</ion-title>
+          <ion-title>Editar</ion-title>
           <ion-buttons slot="end">
             <ion-button (click)="setOpen(false)">Close</ion-button>
           </ion-buttons>
@@ -40,25 +35,32 @@
       </ion-header>
       <ion-content class="ion-padding" *ngFor="let i of items | async; let first= first">
         <ion-item>
-          <ion-input type="text" placeholder="Url do Produto" [(ngModel)]="product.url"></ion-input>
+          <ion-label class="custom" position="stacked">Url do Produto</ion-label>
+          <ion-input class="custom" type="text" [(ngModel)]="product.url"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="text" placeholder="Tipo do Produto" [(ngModel)]="product.type"></ion-input>
+          <ion-label class="custom" position="stacked">Tipo do Produto</ion-label>
+          <ion-input class="custom" type="text" [(ngModel)]="product.type"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="text" placeholder="Marca do produto" [(ngModel)]="product.brand"></ion-input>
+          <ion-label class="custom" position="stacked">Marca do produto</ion-label>
+          <ion-input class="custom" type="text" [(ngModel)]="product.brand"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="text" placeholder="Modelo do Produto" [(ngModel)]="product.model"></ion-input>
+          <ion-label class="custom" position="stacked">Modelo do Produto</ion-label>
+          <ion-input class="custom" type="text" [(ngModel)]="product.model"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="number" placeholder="Valor do Produto" [(ngModel)]="product.price"></ion-input>
+          <ion-label class="custom" position="stacked">Valor do Produto</ion-label>
+          <ion-input class="custom" type="number" [(ngModel)]="product.price"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="number" placeholder="Quantidade do Produto" [(ngModel)]="product.quantity"></ion-input>
+          <ion-label class="custom" position="stacked">Quantidade do Produto</ion-label>
+          <ion-input class="custom" type="number" [(ngModel)]="product.quantity"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="text" placeholder="Descrição do Produto" [(ngModel)]="product.description"></ion-input>
+          <ion-label class="custom" position="stacked">Descrição do Produto</ion-label>
+          <ion-input class="custom" type="text" [(ngModel)]="product.description"></ion-input>
         </ion-item>
         <ion-button (click)="saveProduct()" class="ion-margin-top" color="success" expand="block">
           Cadastrar

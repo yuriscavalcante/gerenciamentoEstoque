@@ -1,10 +1,12 @@
 export interface User {
+    id?: string;
     email?: string;
     password?: string;
     confPassword?: string;
     age?: number;
     name?: string;
     lastName?: string;
+    birthDate?: Date;
 }
 
 export interface Product {

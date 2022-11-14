@@ -1,15 +1,33 @@
+ion-content{
+  --ion-background-color:#4FB9E3;
+  max-height: 100vh;
+}
+img{
+  margin-top: 7rem;
+  margin-left: 5.5rem;
+}
+
+.login{
+  margin-top: -35rem;
+}
+
+.register{
+  margin-top: -20rem;
+}
+
 .container {
+  color: white;
+  --ion-background-color:#4FB9E3;
+  max-height: 50vh;
     position: absolute;
     left: 0;
     right: 0;
     width: 75%;
     margin: 0 auto;
     z-index: 2;
-    background-color: #d3d5db;
-
     &.top {
         top: 5%;
-        background-color: #d3d5db;
+        background-color: #1E4C96;
     }
 
     &.bottom {
@@ -26,21 +44,28 @@ ion-slides {
 
     .slide-inner {
         width: 75%;
-        color: rgb(3, 3, 3);
-        background-color: #d3d5db;
+        color: white;
+        background-color: #1E4C96;
         border-radius: 10px;
 
         ion-item {
             --background: rgb(253, 252, 252);
             --border-radius: 10px;
-            
+
 
             ion-input {
                 --color: rgb(0, 0, 0);
             }
         }
+        ion-button{
+          --background:#4FB9E3;
+        }
 
-        
+
     }
 }
-
+ a{
+  color: white;
+  text-decoration: underline;
+  margin-top: 2rem;
+ }

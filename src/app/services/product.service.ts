@@ -23,10 +23,10 @@ export class ProductService {
     const newId = this.afs.createId();
     const data = {
       url: product.url,
-      type: product.type,
-      brand: product.brand,
+      type: product.type.toUpperCase(),
+      brand: product.brand.toUpperCase(),
       price: product.price,
-      model: product.model,
+      model: product.model.toUpperCase(),
       quantity: product.quantity,
       description: product.description,
       id: newId

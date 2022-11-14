@@ -1,11 +1,32 @@
 ion-header{
   ion-toolbar{
-
     padding-top: 15px;
+    .notification-button {
+      position: relative;
+      width: 42px;
+      top:1px;
+      right: 1px;
+      overflow: visible!important;
+      height: 40px;
+  }
+
+    .notifications-badge {
+          background-color: red;
+          position: absolute;
+          top: 1px;
+          right: -5px;
+          border-radius: 100%;
+      }
+
+      ion-icon{
+        min-height: 30px;
+        min-width: 30px;
+      }
   }
 }
 
 ion-content{
+  --ion-background-color:#1E4C96;
     size-adjust: 100%;
     .label{
         padding-top: 15px;
@@ -13,13 +34,18 @@ ion-content{
         padding-right: 15px;
         font-size: 1.5em;
     }
-
+    ion-card-subtitle{
+      color: black;
+    }
+    ion-card{
+      --ion-background-color:white;
+      margin-bottom: -1rem;
+    }
    .card{
     display: flex;
     padding: 15px;
     margin: 0;
     ion-card{
-
         min-width: 50%;
         max-height: 100%;
         min-width: 100%;
@@ -29,10 +55,36 @@ ion-content{
    .alert{
     color: red;
    }
+
+   ion-modal{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    ng-template{
+      text-align: center;
+      h4{
+        margin-left: 2rem;
+      }
+      ion-content{
+        text-align: center;
+        max-height: 10px;
+      }
+    }
+   }
+
+}
+
+ion-header{
+  ion-toolbar{
+    --background: #1E4C96;
+    ion-searchbar{
+      --background: white;
+    }
+  }
 }
 
 ion-footer{
-  background: #F5F5F5;
+  background: #1E4C96;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,7 +94,19 @@ ion-footer{
     width: 10rem;
 
     margin: 1rem;
-    --background: black;
+    --background: #347C99;
   }
 
+}
+
+.icon{
+  color: white;
+}
+
+.icon:hover{
+  color: blue;
+}
+
+.close{
+  --color: white;
 }

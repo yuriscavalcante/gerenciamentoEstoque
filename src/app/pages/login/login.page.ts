@@ -5,7 +5,7 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable max-len */
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonSlides, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, IonSlides, LoadingController, ToastController } from '@ionic/angular';
 import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
 //import { Keyboard } from '@ionic-native/keyboard/ngx';
@@ -22,11 +22,13 @@ export class LoginPage implements OnInit {
   public userLogin: User = {};
   public userRegister: User = {};
   private loading: any;
-
+  handlerMessage = '';
+  roleMessage = '';
   constructor(
     private authService: AuthService,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
+    private alertController: AlertController
     //public keyboard: Keyboard
   ) { }
 
@@ -48,7 +50,6 @@ export class LoginPage implements OnInit {
     && this.userRegister.confPassword != '' && this.userRegister.password == this.userRegister.confPassword ){
       try {
         await this.authService.register(this.userRegister);
-        this.userRegister = {};
         await this.authService.saveUser(this.userRegister);
       } catch (error) {
         let message: string;
@@ -100,5 +101,45 @@ export class LoginPage implements OnInit {
       this.presentToast("Preencha todos os campos!");
       this.loading.dismiss();
     }
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Digite seu E-mail',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            this.handlerMessage = 'Alert canceled';
+          },
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: (alertData) => {
+            this.handlerMessage = 'Alert confirmed';
+            try{
+              this.authService.resetPassword(alertData.email);
+            }catch (error) {
+              console.error(error);
+            }finally {
+            }
+          },
+        },
+      ],
+      inputs: [
+        {
+          name: 'email',
+          placeholder: 'E-mail',
+          type: 'email'
+        }
+      ]
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+    this.roleMessage = `Dismissed with role: ${role}`;
   }
 }

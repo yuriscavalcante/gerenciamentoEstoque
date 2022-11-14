@@ -1,7 +1,37 @@
+ion-content{
+  --ion-background-color: #1E4C96;
+  ion-card{
+    --ion-background-color: #347C99;
+    --color: white;
+    ion-card-header{
+      ion-card-title{
+        --color: white;
+      }
+      ion-card-subtitle{
+        --color: white;
+      }
+
+    }
+  }
+}
+
 .img{
     padding: 15px;
 }
 
 .card{
     padding: 5px;
+}
+
+ion-input.custom {
+  --placeholder-color: white;
+  --color: white;
+  --background:#347C99;
+  --border-radius: 25px !important;
+  padding: 5px;
+}
+
+ion-label.custom{
+  --color: white;
+  margin-bottom: 15px;
 }

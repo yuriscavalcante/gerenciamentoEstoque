@@ -1,9 +1,63 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>user</ion-title>
+    <ion-buttons>
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <div class="full">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvkdzdQWSbJJ7LKEdTD94Rn8qE57JtO5ZYLBxOSaRj&s" (click)="takePicture()">
+    <div class="data">
+      <ion-label>Olá, {{(users | async)?.name}} {{(users | async)?.lastName}}</ion-label>
+      <ion-label>Idade: {{(users | async)?.age}}</ion-label>
+      <ion-label>Email: {{(users | async)?.email}}</ion-label>
+      <ion-label>Data de Nascimento: {{(users | async)?.birthDate | date:"dd/MM/yyyy"}} </ion-label>
+    </div>
+  </div>
+  <ion-button expand="block" id="modal">Editar</ion-button>
+  <ion-button expand="block" color="danger" (click)="logout()">Logout</ion-button>
 </ion-content>
+
+
+<ion-modal trigger="modal">
+  <ng-template style="text-align: center; --ion-background-color: #347C99;">
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()">Fechar</ion-button>
+        </ion-buttons>
+        <ion-title>Notificações</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding" >
+      <h4 style="color:white;">Edite suas informações</h4>
+      <ion-item class="ion-margin-top" lines="none">
+        <ion-label class="custom" position="stacked">Nome</ion-label>
+        <ion-input class="custom" type="text" [(ngModel)]="userRegister.name"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-margin-top" lines="none">
+        <ion-label class="custom" position="stacked">Sobrenome</ion-label>
+        <ion-input class="custom" type="text" [(ngModel)]="userRegister.lastName"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-margin-top" lines="none">
+        <ion-label class="custom" position="stacked">Idade</ion-label>
+        <ion-input class="custom" type="number" [(ngModel)]="userRegister.age"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-margin-top" lines="none">
+        <ion-label class="custom" position="stacked">Email</ion-label>
+        <ion-input class="custom" type="email" [(ngModel)]="userRegister.email"></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-margin-top" lines="none">
+        <ion-label class="custom" position="stacked">Data de nascimento</ion-label>
+        <ion-input class="custom" type="date" [(ngModel)]="userRegister.birthDate"></ion-input>
+      </ion-item>
+      <ion-button class="confirm" expand="block" id="modal" (click)="presentAlert()">Salvar</ion-button>
+    </ion-content>
+  </ng-template>
+</ion-modal>
