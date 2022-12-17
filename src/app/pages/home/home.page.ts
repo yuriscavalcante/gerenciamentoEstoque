@@ -7,7 +7,7 @@
 /* eslint-disable @angular-eslint/use-lifecycle-interface */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActionSheetController, AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { ActionSheetController, AlertController, isPlatform, LoadingController, ToastController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
 import { Product } from 'src/app/interfaces/product';
 import { Observable } from 'rxjs';
@@ -18,6 +18,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { AdMob, BannerAdOptions, BannerAdPosition, BannerAdSize } from '@capacitor-community/admob';
 
 @Component({
   selector: 'app-home',
@@ -50,8 +51,7 @@ export class HomePage implements OnInit {
     private router: Router,
     private afa: AngularFireAuth,
     private alertController: AlertController,
-  ) {
-  }
+  ) {}
 
 
   async ngOnInit() {
@@ -59,8 +59,28 @@ export class HomePage implements OnInit {
     this.items = await this.productService.getProducts((await this.afa.currentUser).uid);
     this.item = await this.items;
     this.alert = await this.items.pipe(map(items => items.filter(item=>item.quantity<=5)));
-    console.log(this.alert);
+    const { status } = await AdMob.trackingAuthorizationStatus();
+    AdMob.initialize({
+      requestTrackingAuthorization: true,
+      testingDevices: ['YOURTESTDEVICECODE'],
+      initializeForTesting: true
+    });
 
+  this.showBanner();
+
+   }
+
+   async showBanner(){
+    const adId = isPlatform('ios') ? 'ios-ad-id' : 'android-ad-unit';
+
+    const options: BannerAdOptions = {
+      adId,
+      adSize: BannerAdSize.ADAPTIVE_BANNER,
+      position: BannerAdPosition.BOTTOM_CENTER,
+      margin: 0,
+      isTesting: true
+    };
+    await AdMob.showBanner(options);
    }
 
    async ngOnDestroy(){

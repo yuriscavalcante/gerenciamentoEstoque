@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Camera } from '@awesome-cordova-plugins/camera/ngx';
 import { SharedModule } from './shared/shared.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -32,7 +31,7 @@ import { environment } from '../environments/environment';
     AngularFireDatabaseModule,
     SharedModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy, },
-    { provide: PERSISTENCE, useValue: 'session' },Camera ],
+    { provide: PERSISTENCE, useValue: 'session' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
