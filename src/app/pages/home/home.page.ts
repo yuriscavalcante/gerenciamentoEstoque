@@ -71,7 +71,7 @@ export class HomePage implements OnInit {
    }
 
    async showBanner(){
-    const adId = isPlatform('ios') ? 'ios-ad-id' : 'android-ad-unit';
+    const adId = isPlatform('ios') ? 'ca-app-pub-2589915233398550/2887103971' : 'ca-app-pub-2589915233398550/7209777779';
 
     const options: BannerAdOptions = {
       adId,
