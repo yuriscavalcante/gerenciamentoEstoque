@@ -17,6 +17,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { map } from 'rxjs/internal/operators/map';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -38,6 +39,7 @@ export class HomePage implements OnInit {
   roleMessage = '';
   nfilter: any;
   checkedAlert: any [] = [false, false, false];
+  sanitizeUrl!: SafeResourceUrl;
   constructor(
     private authService: AuthService,
     //private prodService: ProductService,
@@ -81,14 +83,6 @@ export class HomePage implements OnInit {
   async presentLoading() {
     this.loading = await this.loadingCtrl.create({ message: 'Aguarde...' });
     return this.loading.present();
-  }
-
-  async deleteProduct(id: string) {
-    try {
-      await this.productService.deleteProduct(id);
-    } catch (error) {
-      this.presentToast('Erro ao tentar deletar');
-    }
   }
 
   async presentToast(message: string) {
@@ -206,6 +200,66 @@ export class HomePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async alertQuantity(item){
+    const alert = await this.alertController.create({
+      header: 'Quantidade de produtos',
+      inputs: [{
+        name: 'quantity',
+        placeholder: item.quantity+' Unidades'
+      }],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirmar',
+          role: 'confirm',
+          handler: async (data: any) => {
+            await this.presentLoading();
+            item.quantity = data.quantity;
+            try{
+              await this.productService.updateProduct(this.uid, item.id, item);
+            }catch(error){
+              this.presentToast(error);
+            }finally {
+              this.loading.dismiss();
+            }
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+ async clickQuantity(value, item){
+
+   if(value === '+'){
+    await this.presentLoading();
+    item.quantity += 1;
+    try{
+      await this.productService.updateProduct(this.uid, item.id, item);
+    }catch(error){
+      this.presentToast(error);
+    }finally {
+      this.loading.dismiss();
+    }
+   }else if(item.quantity>0){
+    await this.presentLoading();
+    item.quantity -= 1;
+    try{
+      await this.productService.updateProduct(this.uid, item.id, item);
+    }catch(error){
+      this.presentToast(error);
+    }finally {
+      this.loading.dismiss();
+    }
+   }else{
+    this.presentToast('A quantidade já está zerada!');
+   }
   }
 
 }

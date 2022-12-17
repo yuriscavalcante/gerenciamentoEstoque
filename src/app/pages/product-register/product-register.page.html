@@ -1,16 +1,16 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="home"></ion-back-button>
+      <ion-back-button mode="ios" text="Voltar" defaultHref="home"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label class="custom" position="stacked">Url do Produto</ion-label>
-    <ion-input class="custom" type="text" [(ngModel)]="product.url"></ion-input>
-  </ion-item>
+ <div class="full">
+  <img src="{{imageSrc}}" (click)="getPicture()">
+  <p (click)="getPicture()">Adicionar imagem</p>
+ </div>
   <ion-item>
     <ion-label class="custom" position="stacked">Tipo do Produto</ion-label>
     <ion-input class="custom" type="text" [(ngModel)]="product.type"></ion-input>

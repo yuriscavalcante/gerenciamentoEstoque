@@ -1,10 +1,18 @@
 ion-content{
   --ion-background-color:#4FB9E3;
   max-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-img{
-  margin-top: 7rem;
-  margin-left: 5.5rem;
+.logo{
+  margin-top: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  img{
+    max-width: 250px;
+  }
 }
 
 .login{

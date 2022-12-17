@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="primary">
-      <ion-button (click)="presentAlert()" class="notification-button" ion-button clear>
+      <ion-button mode="ios" (click)="presentAlert()" class="notification-button" ion-button clear>
         <ion-icon class="icon" name="funnel"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-searchbar #input (keyup)="search(input.value)"></ion-searchbar>
+    <ion-searchbar #input placeholder="Pesquisar" (keyup)="search(input.value)"></ion-searchbar>
     <ion-buttons id="open-modal" slot="primary">
       <ion-button class="notification-button" ion-button clear>
         <ion-icon class="icon" slot="icon-only" name="notifications"></ion-icon>
@@ -18,19 +18,27 @@
 
 <ion-content>
   <ion-list *ngFor="let i of item | async; let first= first">
-    <ion-card [routerLink]="['/details', i.id]">
-      <div align="center">
+    <ion-card class="card">
+      <div [routerLink]="['/details', i.id]" align="center">
         <div class="img">
           <img src="{{i.url}}"/>
         </div>
-    <ion-card-header>
+      <ion-card-header>
       <ion-card-subtitle>{{i.brand}} {{i.model}}</ion-card-subtitle>
-      <ion-card-subtitle>{{i.quantity}} Unidades</ion-card-subtitle>
       <ion-card-subtitle>R${{i.price}}</ion-card-subtitle>
-      <ion-card-subtitle class="alert" *ngIf="i.quantity<=5 && i.quantity>0">Baixo Estoque</ion-card-subtitle>
-      <ion-card-subtitle class="alert" *ngIf="i.quantity===0">Sem Estoque</ion-card-subtitle>
     </ion-card-header>
   </div>
+  <div class="quantity">
+    <ion-button color="danger" (click)=" clickQuantity('-', i)">
+     -
+    </ion-button>
+    <ion-card-subtitle (click)="alertQuantity(i)">{{i.quantity}} Unidades</ion-card-subtitle>
+    <ion-button (click)=" clickQuantity('+', i)">
+      +
+    </ion-button>
+  </div>
+  <ion-card-subtitle class="alert" *ngIf="i.quantity<=5 && i.quantity>0">Baixo Estoque</ion-card-subtitle>
+  <ion-card-subtitle class="alert" *ngIf="i.quantity===0">Sem Estoque</ion-card-subtitle>
     </ion-card>
   </ion-list>
 

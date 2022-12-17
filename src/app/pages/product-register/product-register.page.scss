@@ -1,13 +1,13 @@
 ion-content{
     ion-item{
         padding: 15px;
-        --border-color: black;
         --border-radius: 10px;
     }
 }
 
 
 ion-content{
+
   --ion-background-color: #1E4C96;
   .full{
     display: flex;
@@ -15,6 +15,7 @@ ion-content{
     justify-content: center;
     align-items: center;
     margin-top: 1rem;
+    color: white;
     img{
       max-width: 250px;
       max-height: 250px;
@@ -52,7 +53,12 @@ ion-input.custom {
   --color: white;
   --background:#347C99;
   --border-radius: 25px !important;
+  --border: none;
   padding: 5px;
+  border: none;
+}
+ion-item{
+  --border: none;
   border: none;
 }
 
