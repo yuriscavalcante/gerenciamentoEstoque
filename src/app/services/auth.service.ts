@@ -6,6 +6,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/comp
 import { Store } from '../interfaces/store';
 import { User } from '../interfaces/user';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,11 @@ export class AuthService {
   public uid: string;
   public user: any;
   auth = getAuth();
+  downloadUrl: string;
   constructor(
     private afa: AngularFireAuth,
-    private afs: AngularFirestore)
+    private afs: AngularFirestore,
+    private afSto: AngularFireStorage)
      {
       this.userCollection = this.afs.collection<User>('User');
       }
@@ -41,6 +44,7 @@ export class AuthService {
      async updateUserData(user: User, uid){
       delete user.password;
       delete user.confPassword;
+      user.url = this.downloadUrl;
       return this.afs.doc('User/'+uid).update(user);
      }
 
@@ -81,5 +85,20 @@ export class AuthService {
     getInfo(uid){
         const userDoc = this.afs.doc<User>('User/'+uid);
         return userDoc.collection<Store>('lojas/').valueChanges();
+      }
+
+      async saveAvatar(uid, user, image){
+        const ref = this.afSto.ref(`${uid}/avatar.png`);
+        const deleteRef = this.afSto.ref(`${uid}`);
+        deleteRef.child('/avatar.png').delete();
+        const uploadTask = await ref.put(image);
+        const url = ref.getDownloadURL();
+        url.subscribe(res => this.setUrl(res, uid, user));
+      }
+
+      setUrl(url, uid, user){
+        this.downloadUrl = url;
+        console.log(this.downloadUrl);
+        this.updateUserData(user, uid);
       }
 }

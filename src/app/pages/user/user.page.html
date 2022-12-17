@@ -8,7 +8,8 @@
 
 <ion-content>
   <div class="full">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvkdzdQWSbJJ7LKEdTD94Rn8qE57JtO5ZYLBxOSaRj&s" (click)="takePicture()">
+    <img *ngIf="imageSrc !== undefined" src="{{imageSrc}}" (click)="getPicture()">
+    <img *ngIf="imageSrc === undefined" src="../../../assets/images/user.png" (click)="getPicture()">
     <div class="data">
       <ion-label>Olá, {{(users | async)?.name}} {{(users | async)?.lastName}}</ion-label>
       <ion-label>Idade: {{(users | async)?.age}}</ion-label>

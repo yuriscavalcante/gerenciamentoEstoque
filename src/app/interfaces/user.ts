@@ -7,6 +7,7 @@ export interface User {
     name?: string;
     lastName?: string;
     birthDate?: Date;
+    url?: any;
 }
 
 export interface Product {

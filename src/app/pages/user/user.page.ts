@@ -11,7 +11,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { User } from 'src/app/interfaces/user';
 import { AlertController } from '@ionic/angular';
-import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-user',
@@ -26,18 +27,17 @@ export class UserPage implements OnInit {
   public user: any;
   public uid;
   private loading: any;
+  isDesktop: boolean;
+  type = 'gallery';
+  photos: Blob;
   selectedImage: any;
   email = '';
   password = '';
+  imageSrc: any = undefined;
 
   handlerMessage = '';
   roleMessage = '';
-  options: CameraOptions = {
-    quality: 30,
-    destinationType: this.camera.DestinationType.DATA_URL,
-    encodingType: this.camera.EncodingType.JPEG,
-    mediaType: this.camera.MediaType.PICTURE
-  };
+
   clickedImage: string;
 
   constructor(
@@ -45,14 +45,15 @@ export class UserPage implements OnInit {
     private authService: AuthService,
     private afa: AngularFireAuth,
     private alertController: AlertController,
-    private camera: Camera,
     private actionSheetController: ActionSheetController
   ) {}
 
   async ngOnInit() {
     this.uid = (await this.afa.currentUser).uid;
     this.users = await this.authService.getUser((await this.afa.currentUser).uid);
-    this.users.subscribe(res => {this.userRegister = res; this.email = res.email;});
+    this.users.subscribe(res => {this.userRegister = res; this.email = res.email;
+    this.imageSrc = res.url;});
+    this.imageSrc = this.userRegister.url;
   }
 
   async presentLoading() {
@@ -118,48 +119,36 @@ export class UserPage implements OnInit {
     const { role } = await alert.onDidDismiss();
     this.roleMessage = `Dismissed with role: ${role}`;
   }
-  async takePhoto(sourceType: number) {
-    const options: CameraOptions = {
-      quality: 50,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      correctOrientation: true,
-      sourceType: sourceType,
-    };
-    const image = await this.camera.getPicture(options);
-    // this.selectedImage = 'data:image/jpeg;base64,' + image;
-    // let filename = image.substring(image.lastIndexOf('/')+1);
-    // let path =  image.substring(0,image.lastIndexOf('/')+1);
-    // //then use it in the readAsDataURL method of cordova file plugin
-    // //this.file is declared in constructor file :File
-    // this.selectedImage = await this.file.readAsDataURL(path, filename);
-    // // this.selectedImage = image;
-    this.selectedImage = (<any>window).Ionic.WebView.convertFileSrc(image);
+
+  async getPicture() {
+    if (!Capacitor.isPluginAvailable('Camera') || (this.isDesktop && this.type === 'gallery')) {
+      return;
+    }
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: true,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Prompt,
+
+    });
+    this.imageSrc = image.dataUrl;
+    this.photos = await this.convertBase64ToBlob(this.imageSrc);
+    this.sendImage(this.photos);
   }
 
-  async takePicture() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'photo',
-      buttons: [{
-        text: 'From Photos',
-        handler: () =>{
-          console.log('gallery');
-        }
-      },{
-        text: 'Take Picture',
-        handler: () =>{
-          console.log('camera');
-        }
-      },{
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: ()=>{
-          console.log('cancel');
-        }
-      }]
-    });
-    await actionSheet.present();
+  public async convertBase64ToBlob(imageBase64: string) {
+    const response = await fetch(imageBase64);
+    const blob = await response.blob();
+    return blob;
   }
+
+  async sendImage(image){
+    //this.presentLoading();
+    const fd = new FormData();
+    fd.append('imagem', image, this.uid);
+    const res = await this.authService.saveAvatar(this.uid, this.userRegister, image);
+    //this.loading.dismiss();
+  }
+
+
 }

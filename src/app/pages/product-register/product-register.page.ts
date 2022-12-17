@@ -38,7 +38,6 @@ export class ProductRegisterPage implements OnInit {
   type = 'gallery';
   imageSrc = 'https://touchcomp.com.br/wp-content/uploads/2020/04/controle-de-estoque.jpg';
   photos: Blob;
-  teste: any;
   constructor(
     private authService: AuthService,
     private loadingCtrl: LoadingController,
