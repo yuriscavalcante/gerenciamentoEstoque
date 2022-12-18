@@ -79,6 +79,16 @@ export class ProductService {
     url.subscribe(res => this.setUrl(res, uid, prodId, product));
    }
 
+   async updatePhotoProduct(uid, prodId, image: Blob, product){
+    const ref = this.afSto.ref(`${uid}/${prodId}/image.png`);
+    const deleteRef = this.afSto.ref(`${uid}/${prodId}`);
+    await deleteRef.child('/image.png').delete();
+    const uploadTask = await ref.put(image);
+    const url = ref.getDownloadURL();
+    url.subscribe(res => this.setUrl(res, uid, prodId, product));
+   }
+
+
    setUrl(url, uid, prodId, product){
     this.downloadUrl = url;
     console.log(this.downloadUrl);

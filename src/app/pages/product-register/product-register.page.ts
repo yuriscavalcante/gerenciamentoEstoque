@@ -58,19 +58,19 @@ export class ProductRegisterPage implements OnInit {
 
   async register()
   {
-    //await this.presentLoading();
+    await this.presentLoading();
     try
     {
       const res = await this.prodService.addProduct(this.uid, this.product);
       await this.sendImage(res.id, this.photos);
 
-      //this.router.navigate(['home']);
+      this.router.navigate(['home']);
     }
     catch(error){
 
     }
     finally{
-      //this.loading.dismiss();
+      this.loading.dismiss();
     }
   }
 
@@ -107,11 +107,9 @@ export class ProductRegisterPage implements OnInit {
   }
 
   async sendImage(productId, image){
-    //this.presentLoading();
     const fd = new FormData();
     fd.append('imagem', image, productId);
     const res = await this.prodService.savePhotoProduct(this.uid, productId, image, this.product);
-    //this.loading.dismiss();
   }
 
 }

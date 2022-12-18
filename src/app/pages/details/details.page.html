@@ -35,8 +35,7 @@
       </ion-header>
       <ion-content class="ion-padding" *ngFor="let i of items | async; let first= first">
         <ion-item>
-          <ion-label class="custom" position="stacked">Url do Produto</ion-label>
-          <ion-input class="custom" type="text" [(ngModel)]="product.url"></ion-input>
+          <img (click)="getPicture()" src="{{product.url}}"/>
         </ion-item>
         <ion-item>
           <ion-label class="custom" position="stacked">Tipo do Produto</ion-label>
