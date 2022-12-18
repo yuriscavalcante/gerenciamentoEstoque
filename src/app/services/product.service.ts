@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 /* eslint-disable arrow-body-style */
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
@@ -11,7 +12,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ProductService {
-  downloadUrl: string;
+  downloadUrl: string = '';
   private userCollection: AngularFirestoreCollection<User>;
   private productCollection: AngularFirestoreCollection<Product>;
 
@@ -58,9 +59,9 @@ export class ProductService {
 
 
    async updateProduct(uId, id: string, product: Product)
-   {;
+   {
     const data = {
-      url: this.downloadUrl,
+      url: '',
       type: product.type,
       brand: product.brand,
       price: product.price,
@@ -69,6 +70,11 @@ export class ProductService {
       description: product.description,
       availability: product.availability,
     };
+    if(this.downloadUrl !== ''){
+      data.url = this.downloadUrl;
+    }else{
+      data.url = product.url;
+    }
     return this.afs.doc('User/'+uId+'/produtos/'+id).update(data);
    }
 

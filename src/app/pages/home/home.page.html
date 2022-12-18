@@ -38,7 +38,7 @@
     </ion-button>
   </div>
   <ion-card-subtitle class="alert" *ngIf="i.quantity<=5 && i.quantity>0">Baixo Estoque</ion-card-subtitle>
-  <ion-card-subtitle class="alert" *ngIf="i.quantity===0">Sem Estoque</ion-card-subtitle>
+  <ion-card-subtitle class="alert" *ngIf="i.quantity<1">Sem Estoque</ion-card-subtitle>
     </ion-card>
   </ion-list>
 
