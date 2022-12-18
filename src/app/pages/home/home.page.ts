@@ -259,7 +259,7 @@ export class HomePage implements OnInit {
 
    if(value === '+'){
     await this.presentLoading();
-    item.quantity += 1;
+    item.quantity = (Number(item.quantity) + 1);
     try{
       await this.productService.updateProduct(this.uid, item.id, item);
     }catch(error){
